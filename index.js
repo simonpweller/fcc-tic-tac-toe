@@ -40,7 +40,7 @@
       targetId = parseInt(target.id.substring(4));
       if (board[targetId] === "") {
         board[targetId] = nextPlayer;
-        togglePlayers();
+        nextPlayer = getInactivePlayer(nextPlayer);
         render(board);
         if (gameState(board) === "open") {
           updateTurnIndicator();
@@ -75,7 +75,7 @@
 
     setTimeout(function () {
       board[move] = nextPlayer;
-      togglePlayers();
+      nextPlayer = getInactivePlayer(nextPlayer);
       updateTurnIndicator();
       render(board);
     }, 1000);
@@ -91,21 +91,8 @@
     return moves;
   }
 
-  // switch back and forth between players;
-  function togglePlayers() {
-    if (nextPlayer === "x") {
-      nextPlayer = "o";
-    } else {
-      nextPlayer = "x";
-    }
-  }
-
   function getInactivePlayer(nextPlayer) {
-    if (nextPlayer === "x") {
-      return "o";
-    } else {
-      return "x";
-    }
+    return nextPlayer === "x" ? "o" : "x";
   }
 
   // updates the DOM to reflect the state of board;
