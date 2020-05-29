@@ -187,7 +187,7 @@
     let blocked = true;
     for (let i = 0; i < lines.length; i++) {
       line = lines[i];
-      res = evaluateLine.apply(null, line);
+      res = evaluateLine(line);
       if (res === "x") {
         return "x";
       } else if (res === "o") {
@@ -216,18 +216,9 @@
     ];
   }
 
-  function evaluateLine(cell1, cell2, cell3) {
-    let xCount = 0;
-    let oCount = 0;
-
-    for (let i = 0; i < 3; i++) {
-      const cell = arguments[i];
-      if (cell === "x") {
-        xCount++;
-      } else if (cell === "o") {
-        oCount++;
-      }
-    }
+  function evaluateLine(line) {
+    let xCount = line.filter((cell) => cell === "x").length;
+    let oCount = line.filter((cell) => cell === "o").length;
 
     if (xCount === 3) {
       return "x";
