@@ -1,8 +1,8 @@
 (function () {
-  var board = ["", "", "", "", "", "", "", "", ""];
-  var nextPlayer = "x";
-  var playerSymbol = "x";
-  var cpuSymbol = "o";
+  let board = ["", "", "", "", "", "", "", "", ""];
+  let nextPlayer;
+  let playerSymbol;
+  let cpuSymbol;
 
   render(board);
 
@@ -32,8 +32,8 @@
   // set up handler
 
   function playerPlay(e) {
-    var target = e.target;
-    var targetId;
+    const target = e.target;
+    let targetId;
     if (target.className !== "cell" || nextPlayer === cpuSymbol) {
       return;
     } else {
@@ -51,27 +51,27 @@
   }
 
   function computerPlay() {
-    var ratings = rateMoves(board, nextPlayer);
+    const ratings = rateMoves(board, nextPlayer);
 
     // best possible Outcome
-    var bestPossibleOutcome = -1;
-    for (i in ratings) {
+    let bestPossibleOutcome = -1;
+    for (let i in ratings) {
       if (ratings[i][1] > bestPossibleOutcome) {
         bestPossibleOutcome = ratings[i][1];
       }
     }
 
     // array of 'optimal' moves
-    var moves = [];
-    for (i in ratings) {
+    const moves = [];
+    for (let i in ratings) {
       if (ratings[i][1] === bestPossibleOutcome) {
         moves.push(ratings[i][0]);
       }
     }
 
     // select move;
-    var rand = Math.floor(Math.random() * moves.length);
-    var move = moves[rand];
+    const rand = Math.floor(Math.random() * moves.length);
+    const move = moves[rand];
 
     setTimeout(function () {
       board[move] = nextPlayer;
@@ -82,8 +82,8 @@
   }
 
   function listMoves(board) {
-    var moves = [];
-    for (var i = 0; i < board.length; i++) {
+    const moves = [];
+    for (let i = 0; i < board.length; i++) {
       if (board[i] === "") {
         moves.push(i);
       }
@@ -110,11 +110,11 @@
 
   // updates the DOM to reflect the state of board;
   function render(board) {
-    var cells = document.querySelectorAll(".cell");
+    const cells = document.querySelectorAll(".cell");
     cells.forEach(function (cell, index) {
       cell.textContent = board[index];
     });
-    var res = gameState(board);
+    const res = gameState(board);
     if (res === "x" || res === "o" || res === "tie") {
       if (res === "tie") {
         document.querySelector("#result").textContent = "It's a tie!";
@@ -138,8 +138,8 @@
   }
 
   function rateMoves(board, nextPlayer) {
-    var moveList = listMoves(board);
-    var ratedMoves = [];
+    const moveList = listMoves(board);
+    const ratedMoves = [];
     moveList.forEach(function (move) {
       ratedMoves.push([move, rateMove(board, nextPlayer, move)]);
     });
@@ -147,9 +147,9 @@
   }
 
   function rateMove(board, nextPlayer, move) {
-    var virtualBoard = simulateBoard(board, nextPlayer, move);
-    var virtualState = gameState(virtualBoard);
-    var otherPlayer = getInactivePlayer(nextPlayer);
+    const virtualBoard = simulateBoard(board, nextPlayer, move);
+    const virtualState = gameState(virtualBoard);
+    const otherPlayer = getInactivePlayer(nextPlayer);
     if (virtualState === nextPlayer) {
       return 1;
     } else if (virtualState === otherPlayer) {
@@ -158,10 +158,10 @@
       return 0;
     } else {
       /// virtualState === open - recursively evaluate minmax
-      var possibleOutcomes = rateMoves(virtualBoard, otherPlayer);
-      var bestOutcome = -2; // best outcome for the OTHER player;
-      var outcome;
-      for (index in possibleOutcomes) {
+      const possibleOutcomes = rateMoves(virtualBoard, otherPlayer);
+      let bestOutcome = -2; // best outcome for the OTHER player;
+      let outcome;
+      for (let index in possibleOutcomes) {
         // assume OTHER player will play optimally
         outcome = possibleOutcomes[index][1];
         if (outcome > bestOutcome) {
@@ -173,19 +173,19 @@
   }
 
   function simulateBoard(board, nextPlayer, move) {
-    var newBoard = board.slice();
+    const newBoard = board.slice();
     newBoard[move] = nextPlayer;
     return newBoard;
   }
 
   function gameState(board) {
-    var lines = lineList(board);
+    const lines = lineList(board);
 
     // loop through lines;
-    var line;
-    var res;
-    var blocked = true;
-    for (var i = 0; i < lines.length; i++) {
+    let line;
+    let res;
+    let blocked = true;
+    for (let i = 0; i < lines.length; i++) {
       line = lines[i];
       res = evaluateLine.apply(null, line);
       if (res === "x") {
@@ -217,11 +217,11 @@
   }
 
   function evaluateLine(cell1, cell2, cell3) {
-    var xCount = 0;
-    var oCount = 0;
+    let xCount = 0;
+    let oCount = 0;
 
-    for (var i = 0; i < 3; i++) {
-      var cell = arguments[i];
+    for (let i = 0; i < 3; i++) {
+      const cell = arguments[i];
       if (cell === "x") {
         xCount++;
       } else if (cell === "o") {
@@ -241,7 +241,7 @@
   }
 
   function updateTurnIndicator() {
-    var res = gameState(board);
+    const res = gameState(board);
     if (res === "open") {
       if (nextPlayer === playerSymbol) {
         document.querySelector("#turnIndicator").textContent = "Your turn";
