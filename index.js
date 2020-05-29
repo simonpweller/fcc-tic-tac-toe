@@ -243,12 +243,9 @@
   function updateTurnIndicator() {
     const res = gameState(board);
     if (res === "open") {
-      if (nextPlayer === playerSymbol) {
-        document.querySelector("#turnIndicator").textContent = "Your turn";
-      } else if (nextPlayer === cpuSymbol) {
-        document.querySelector("#turnIndicator").textContent =
-          "Computer's turn";
-      }
+      const displayText =
+        nextPlayer === playerSymbol ? "Your turn" : "Computer's turn";
+      document.querySelector("#turnIndicator").textContent = displayText;
     } else {
       document.querySelector("#turnIndicator").textContent = "";
     }
