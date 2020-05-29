@@ -181,13 +181,9 @@
   function gameState(board) {
     const lines = lineList(board);
 
-    // loop through lines;
-    let line;
-    let res;
     let blocked = true;
     for (let i = 0; i < lines.length; i++) {
-      line = lines[i];
-      res = evaluateLine(line);
+      const res = evaluateLine(lines[i]);
       if (res === "x") {
         return "x";
       } else if (res === "o") {
@@ -197,10 +193,7 @@
       }
     }
 
-    if (blocked) {
-      return "tie";
-    }
-    return "open";
+    return blocked ? "tie" : "open";
   }
 
   function lineList(board) {
