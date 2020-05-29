@@ -210,8 +210,8 @@
   }
 
   function evaluateLine(line) {
-    let xCount = line.filter((cell) => cell === "x").length;
-    let oCount = line.filter((cell) => cell === "o").length;
+    const xCount = line.filter((cell) => cell === "x").length;
+    const oCount = line.filter((cell) => cell === "o").length;
 
     if (xCount === 3) {
       return "x";
