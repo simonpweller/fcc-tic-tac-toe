@@ -138,12 +138,10 @@
   }
 
   function rateMoves(board, nextPlayer) {
-    const moveList = listMoves(board);
-    const ratedMoves = [];
-    moveList.forEach(function (move) {
-      ratedMoves.push([move, rateMove(board, nextPlayer, move)]);
-    });
-    return ratedMoves;
+    return listMoves(board).map((move) => [
+      move,
+      rateMove(board, nextPlayer, move),
+    ]);
   }
 
   function rateMove(board, nextPlayer, move) {
