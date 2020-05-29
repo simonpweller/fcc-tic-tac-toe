@@ -182,8 +182,8 @@
     const lines = lineList(board);
 
     let blocked = true;
-    for (let i = 0; i < lines.length; i++) {
-      const res = evaluateLine(lines[i]);
+    for (let line of lines) {
+      const res = evaluateLine(line);
       if (res === "x") {
         return "x";
       } else if (res === "o") {
