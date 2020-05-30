@@ -106,13 +106,10 @@
       if (res === "tie") {
         document.querySelector("#result").textContent = "It's a tie!";
       } else {
-        document.querySelector("#result").textContent =
-          res.toUpperCase() + " has won!";
+        document.querySelector("#result").textContent = res.toUpperCase() + " has won!";
       }
       document.querySelector("#turnIndicator").textContent = "";
-      document
-        .querySelector("#gameBoard")
-        .removeEventListener("click", playerPlay);
+      document.querySelector("#gameBoard").removeEventListener("click", playerPlay);
       setTimeout(function () {
         document.querySelector("#result").textContent = "";
         document.querySelector("#playerSelection").style.display = "block";
@@ -125,10 +122,7 @@
   }
 
   function rateMoves(board, nextPlayer) {
-    return listMoves(board).map((move) => [
-      move,
-      rateMove(board, nextPlayer, move),
-    ]);
+    return listMoves(board).map((move) => [move, rateMove(board, nextPlayer, move)]);
   }
 
   function rateMove(board, nextPlayer, move) {
@@ -212,8 +206,7 @@
   function updateTurnIndicator() {
     const res = gameState(board);
     if (res === "open") {
-      const displayText =
-        nextPlayer === playerSymbol ? "Your turn" : "Computer's turn";
+      const displayText = nextPlayer === playerSymbol ? "Your turn" : "Computer's turn";
       document.querySelector("#turnIndicator").textContent = displayText;
     } else {
       document.querySelector("#turnIndicator").textContent = "";
