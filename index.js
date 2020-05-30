@@ -6,27 +6,23 @@
 
   render(board);
 
-  document.querySelector("#x").addEventListener("click", function () {
-    playerSymbol = "x";
-    cpuSymbol = "o";
-    nextPlayer = "x";
-    init();
-  });
+  document.querySelector("#x").addEventListener("click", init.bind(null, "x"));
+  document.querySelector("#o").addEventListener("click", init.bind(null, "o"));
 
-  document.querySelector("#o").addEventListener("click", function () {
-    playerSymbol = "o";
-    cpuSymbol = "x";
-    nextPlayer = "x";
-    init();
-    computerPlay();
-  });
-
-  function init() {
+  function init(player) {
     resetBoard();
+    playerSymbol = player;
+    cpuSymbol = getOtherPlayer(player);
+    nextPlayer = "x";
+
     render(board);
     document.querySelector("#playerSelection").style.display = "none";
     document.querySelector("#gameBoard").addEventListener("click", playerPlay);
     updateTurnIndicator();
+
+    if (cpuSymbol === "x") {
+      computerPlay();
+    }
   }
 
   // set up handler
@@ -40,7 +36,7 @@
       targetId = parseInt(target.id.substring(4));
       if (board[targetId] === "") {
         board[targetId] = nextPlayer;
-        nextPlayer = getInactivePlayer(nextPlayer);
+        nextPlayer = getOtherPlayer(nextPlayer);
         render(board);
         if (gameState(board) === "open") {
           updateTurnIndicator();
@@ -75,7 +71,7 @@
 
     setTimeout(function () {
       board[move] = nextPlayer;
-      nextPlayer = getInactivePlayer(nextPlayer);
+      nextPlayer = getOtherPlayer(nextPlayer);
       updateTurnIndicator();
       render(board);
     }, 1000);
@@ -91,8 +87,8 @@
     return moves;
   }
 
-  function getInactivePlayer(nextPlayer) {
-    return nextPlayer === "x" ? "o" : "x";
+  function getOtherPlayer(player) {
+    return player === "x" ? "o" : "x";
   }
 
   // updates the DOM to reflect the state of board;
@@ -128,7 +124,7 @@
   function rateMove(board, nextPlayer, move) {
     const virtualBoard = simulateBoard(board, nextPlayer, move);
     const virtualState = gameState(virtualBoard);
-    const otherPlayer = getInactivePlayer(nextPlayer);
+    const otherPlayer = getOtherPlayer(nextPlayer);
     if (virtualState === nextPlayer) {
       return 1;
     } else if (virtualState === otherPlayer) {
