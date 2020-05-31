@@ -130,20 +130,11 @@
 
   function getGameState(board) {
     const lines = lineList(board);
-
-    let blocked = true;
-    for (let line of lines) {
-      const res = evaluateLine(line);
-      if (res === "x") {
-        return "x";
-      } else if (res === "o") {
-        return "o";
-      } else if (res === "open") {
-        blocked = false;
-      }
-    }
-
-    return blocked ? "tie" : "open";
+    const lineResults = lines.map(evaluateLine);
+    if (lineResults.includes("x")) return "x";
+    if (lineResults.includes("o")) return "o";
+    if (lineResults.includes("open")) return "open";
+    return "tie";
   }
 
   function lineList(board) {
