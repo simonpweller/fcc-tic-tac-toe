@@ -45,28 +45,28 @@
   function computerPlay() {
     const ratedMoves = rateMoves(board, cpu);
 
-    // best possible Outcome
-    let bestPossibleOutcome = -1;
+    // best possible rating
+    let bestPossibleRating = -1;
     for (let [move, rating] of ratedMoves) {
-      if (rating > bestPossibleOutcome) {
-        bestPossibleOutcome = rating;
+      if (rating > bestPossibleRating) {
+        bestPossibleRating = rating;
       }
     }
 
     // array of 'optimal' moves
-    const moves = [];
+    const optimalMoves = [];
     for (let [move, rating] of ratedMoves) {
-      if (rating === bestPossibleOutcome) {
-        moves.push(move);
+      if (rating === bestPossibleRating) {
+        optimalMoves.push(move);
       }
     }
 
     // select move;
-    const rand = Math.floor(Math.random() * moves.length);
-    const move = moves[rand];
+    const rand = Math.floor(Math.random() * optimalMoves.length);
+    const selectedMove = optimalMoves[rand];
 
     setTimeout(function () {
-      board[move] = cpu;
+      board[selectedMove] = cpu;
       nextPlayer = player;
       render(board);
     }, 1000);
