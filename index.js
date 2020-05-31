@@ -17,7 +17,7 @@
     document.querySelector("#playerSelection").style.display = "none";
     document.querySelector("#gameBoard").addEventListener("click", playerPlay);
 
-    if (cpu === "x") {
+    if (nextPlayer === cpu) {
       computerPlay();
     }
   }
