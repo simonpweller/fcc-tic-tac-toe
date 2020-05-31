@@ -22,8 +22,6 @@
     }
   }
 
-  // set up handler
-
   function playerPlay(e) {
     const target = e.target;
     let targetId;
