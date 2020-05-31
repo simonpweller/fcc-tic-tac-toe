@@ -151,14 +151,9 @@
     const xCount = line.filter((cell) => cell === "x").length;
     const oCount = line.filter((cell) => cell === "o").length;
 
-    if (xCount === 3) {
-      return "x";
-    } else if (oCount === 3) {
-      return "o";
-    } else if (oCount > 0 && xCount > 0) {
-      return "blocked";
-    } else {
-      return "open";
-    }
+    if (xCount === 3) return "x";
+    if (oCount === 3) return "o";
+    if (oCount > 0 && xCount > 0) return "blocked";
+    return "open";
   }
 })();
