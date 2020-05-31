@@ -87,25 +87,25 @@
   }
 
   function render(board) {
-    const cells = document.querySelectorAll(".cell");
-    cells.forEach(function (cell, index) {
-      cell.textContent = board[index];
-    });
-    const res = gameState(board);
-    if (res === "x" || res === "o" || res === "tie") {
-      if (res === "tie") {
-        document.querySelector("#display").textContent = "It's a tie!";
-      } else {
-        document.querySelector("#display").textContent = res.toUpperCase() + " has won!";
-      }
+    document.querySelectorAll(".cell").forEach((cell, index) => (cell.textContent = board[index]));
+
+    const gameState = gameState(board);
+    if (gameState === "tie") {
+      document.querySelector("#display").textContent = "It's a tie!";
+    }
+    if (gameState === "x" || gameState === "o") {
+      document.querySelector("#display").textContent = gameState.toUpperCase() + " has won!";
+    }
+
+    if (gameState === "x" || gameState === "o" || gameState === "tie") {
       document.querySelector("#gameBoard").removeEventListener("click", playerPlay);
-      setTimeout(function () {
+      setTimeout(() => {
         document.querySelector("#display").textContent = "";
         document.querySelector("#playerSelection").style.display = "block";
       }, 1000);
     }
 
-    if (res === "open") {
+    if (gameState === "open") {
       switch (nextPlayer) {
         case playerSymbol:
           document.querySelector("#display").textContent = "Your turn";
