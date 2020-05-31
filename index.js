@@ -43,7 +43,7 @@
   }
 
   function computerPlay() {
-    const ratings = rateMoves(board, nextPlayer);
+    const ratings = rateMoves(board, cpu);
 
     // best possible Outcome
     let bestPossibleOutcome = -1;
@@ -66,8 +66,8 @@
     const move = moves[rand];
 
     setTimeout(function () {
-      board[move] = nextPlayer;
-      nextPlayer = getOtherPlayer(nextPlayer);
+      board[move] = cpu;
+      nextPlayer = player;
       render(board);
     }, 1000);
   }
