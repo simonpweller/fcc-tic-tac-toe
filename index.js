@@ -100,16 +100,10 @@
     const virtualBoard = simulateBoard(board, nextPlayer, move);
     const virtualState = getGameState(virtualBoard);
     const otherPlayer = getOtherPlayer(nextPlayer);
-    if (virtualState === nextPlayer) {
-      return 1;
-    } else if (virtualState === otherPlayer) {
-      return -1;
-    } else if (virtualState === "tie") {
-      return 0;
-    } else {
-      let bestPossibleOutcomeForOtherPlayer = getOptimalRatedMove(virtualBoard, otherPlayer)[1];
-      return bestPossibleOutcomeForOtherPlayer * -1;
-    }
+    if (virtualState === nextPlayer) return 1;
+    if (virtualState === otherPlayer) return -1;
+    if (virtualState === "tie") return 0;
+    return -getOptimalRatedMove(virtualBoard, otherPlayer)[1];
   }
 
   function getOptimalRatedMove(board, player) {
