@@ -47,17 +47,17 @@
 
     // best possible Outcome
     let bestPossibleOutcome = -1;
-    for (let i in ratedMoves) {
-      if (ratedMoves[i][1] > bestPossibleOutcome) {
-        bestPossibleOutcome = ratedMoves[i][1];
+    for (let [move, rating] of ratedMoves) {
+      if (rating > bestPossibleOutcome) {
+        bestPossibleOutcome = rating;
       }
     }
 
     // array of 'optimal' moves
     const moves = [];
-    for (let i in ratedMoves) {
-      if (ratedMoves[i][1] === bestPossibleOutcome) {
-        moves.push(ratedMoves[i][0]);
+    for (let [move, rating] of ratedMoves) {
+      if (rating === bestPossibleOutcome) {
+        moves.push(move);
       }
     }
 
