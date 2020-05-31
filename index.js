@@ -1,23 +1,23 @@
 (function () {
   let board = ["", "", "", "", "", "", "", "", ""];
   let nextPlayer;
-  let playerSymbol;
-  let cpuSymbol;
+  let player;
+  let cpu;
 
   document.querySelector("#x").addEventListener("click", init.bind(null, "x"));
   document.querySelector("#o").addEventListener("click", init.bind(null, "o"));
 
-  function init(player) {
+  function init(playerSymbol) {
     resetBoard();
-    playerSymbol = player;
-    cpuSymbol = getOtherPlayer(player);
+    player = playerSymbol;
+    cpu = getOtherPlayer(playerSymbol);
     nextPlayer = "x";
     render(board);
 
     document.querySelector("#playerSelection").style.display = "none";
     document.querySelector("#gameBoard").addEventListener("click", playerPlay);
 
-    if (cpuSymbol === "x") {
+    if (cpu === "x") {
       computerPlay();
     }
   }
@@ -27,7 +27,7 @@
   function playerPlay(e) {
     const target = e.target;
     let targetId;
-    if (target.className !== "cell" || nextPlayer === cpuSymbol) {
+    if (target.className !== "cell" || nextPlayer === cpu) {
       return;
     } else {
       targetId = parseInt(target.id.substring(4));
@@ -35,7 +35,7 @@
         board[targetId] = nextPlayer;
         nextPlayer = getOtherPlayer(nextPlayer);
         render(board);
-        if (gameState(board) === "open") {
+        if (getGameState(board) === "open") {
           computerPlay();
         }
       }
@@ -89,7 +89,7 @@
   function render(board) {
     document.querySelectorAll(".cell").forEach((cell, index) => (cell.textContent = board[index]));
 
-    const gameState = gameState(board);
+    const gameState = getGameState(board);
     if (gameState === "tie") {
       document.querySelector("#display").textContent = "It's a tie!";
     }
@@ -107,10 +107,10 @@
 
     if (gameState === "open") {
       switch (nextPlayer) {
-        case playerSymbol:
+        case player:
           document.querySelector("#display").textContent = "Your turn";
           break;
-        case cpuSymbol:
+        case cpu:
           document.querySelector("#display").textContent = "Computer's turn";
           break;
         default:
@@ -129,7 +129,7 @@
 
   function rateMove(board, nextPlayer, move) {
     const virtualBoard = simulateBoard(board, nextPlayer, move);
-    const virtualState = gameState(virtualBoard);
+    const virtualState = getGameState(virtualBoard);
     const otherPlayer = getOtherPlayer(nextPlayer);
     if (virtualState === nextPlayer) {
       return 1;
@@ -159,7 +159,7 @@
     return newBoard;
   }
 
-  function gameState(board) {
+  function getGameState(board) {
     const lines = lineList(board);
 
     let blocked = true;
