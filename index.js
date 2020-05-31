@@ -4,8 +4,6 @@
   let playerSymbol;
   let cpuSymbol;
 
-  render(board);
-
   document.querySelector("#x").addEventListener("click", init.bind(null, "x"));
   document.querySelector("#o").addEventListener("click", init.bind(null, "o"));
 
@@ -14,11 +12,10 @@
     playerSymbol = player;
     cpuSymbol = getOtherPlayer(player);
     nextPlayer = "x";
-
     render(board);
+
     document.querySelector("#playerSelection").style.display = "none";
     document.querySelector("#gameBoard").addEventListener("click", playerPlay);
-    updateTurnIndicator();
 
     if (cpuSymbol === "x") {
       computerPlay();
@@ -39,7 +36,6 @@
         nextPlayer = getOtherPlayer(nextPlayer);
         render(board);
         if (gameState(board) === "open") {
-          updateTurnIndicator();
           computerPlay();
         }
       }
@@ -72,7 +68,6 @@
     setTimeout(function () {
       board[move] = nextPlayer;
       nextPlayer = getOtherPlayer(nextPlayer);
-      updateTurnIndicator();
       render(board);
     }, 1000);
   }
@@ -91,7 +86,6 @@
     return player === "x" ? "o" : "x";
   }
 
-  // updates the DOM to reflect the state of board;
   function render(board) {
     const cells = document.querySelectorAll(".cell");
     cells.forEach(function (cell, index) {
@@ -100,16 +94,28 @@
     const res = gameState(board);
     if (res === "x" || res === "o" || res === "tie") {
       if (res === "tie") {
-        document.querySelector("#result").textContent = "It's a tie!";
+        document.querySelector("#display").textContent = "It's a tie!";
       } else {
-        document.querySelector("#result").textContent = res.toUpperCase() + " has won!";
+        document.querySelector("#display").textContent = res.toUpperCase() + " has won!";
       }
-      document.querySelector("#turnIndicator").textContent = "";
       document.querySelector("#gameBoard").removeEventListener("click", playerPlay);
       setTimeout(function () {
-        document.querySelector("#result").textContent = "";
+        document.querySelector("#display").textContent = "";
         document.querySelector("#playerSelection").style.display = "block";
       }, 1000);
+    }
+
+    if (res === "open") {
+      switch (nextPlayer) {
+        case playerSymbol:
+          document.querySelector("#display").textContent = "Your turn";
+          break;
+        case cpuSymbol:
+          document.querySelector("#display").textContent = "Computer's turn";
+          break;
+        default:
+          document.querySelector("#display").textContent = "";
+      }
     }
   }
 
@@ -196,16 +202,6 @@
       return "blocked";
     } else {
       return "open";
-    }
-  }
-
-  function updateTurnIndicator() {
-    const res = gameState(board);
-    if (res === "open") {
-      const displayText = nextPlayer === playerSymbol ? "Your turn" : "Computer's turn";
-      document.querySelector("#turnIndicator").textContent = displayText;
-    } else {
-      document.querySelector("#turnIndicator").textContent = "";
     }
   }
 })();
