@@ -24,14 +24,11 @@
 
   function playerPlay(e) {
     const target = e.target;
-    let targetId;
-    if (target.className !== "cell" || nextPlayer === cpu) {
-      return;
-    } else {
-      targetId = parseInt(target.id.substring(4));
+    if (target.className === "cell" && nextPlayer !== cpu) {
+      const targetId = parseInt(target.id.substring(4));
       if (board[targetId] === "") {
-        board[targetId] = nextPlayer;
-        nextPlayer = getOtherPlayer(nextPlayer);
+        board[targetId] = player;
+        nextPlayer = cpu;
         render(board);
         if (getGameState(board) === "open") {
           computerPlay();
