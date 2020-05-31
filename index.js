@@ -44,26 +44,11 @@
 
   function computerPlay() {
     const ratedMoves = rateMoves(board, cpu);
-
-    // best possible rating
-    let bestPossibleRating = -1;
-    for (let [move, rating] of ratedMoves) {
-      if (rating > bestPossibleRating) {
-        bestPossibleRating = rating;
-      }
-    }
-
-    // array of 'optimal' moves
-    const optimalMoves = [];
-    for (let [move, rating] of ratedMoves) {
-      if (rating === bestPossibleRating) {
-        optimalMoves.push(move);
-      }
-    }
-
-    // select move;
-    const rand = Math.floor(Math.random() * optimalMoves.length);
-    const selectedMove = optimalMoves[rand];
+    const bestPossibleRating = Math.max(...ratedMoves.map(([_, rating]) => rating));
+    const optimalMoves = ratedMoves
+      .filter(([_, rating]) => rating === bestPossibleRating)
+      .map(([move, _]) => move);
+    const selectedMove = optimalMoves[Math.floor(Math.random() * optimalMoves.length)];
 
     setTimeout(function () {
       board[selectedMove] = cpu;
