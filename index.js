@@ -57,14 +57,8 @@
     }, 1000);
   }
 
-  function listMoves(board) {
-    const moves = [];
-    for (let i = 0; i < board.length; i++) {
-      if (board[i] === "") {
-        moves.push(i);
-      }
-    }
-    return moves;
+  function availableMoves(board) {
+    return board.map((_, index) => index).filter((index) => board[index] === "");
   }
 
   function getOtherPlayer(player) {
@@ -109,7 +103,7 @@
   }
 
   function rateMoves(board, nextPlayer) {
-    return listMoves(board).map((move) => [move, rateMove(board, nextPlayer, move)]);
+    return availableMoves(board).map((move) => [move, rateMove(board, nextPlayer, move)]);
   }
 
   function rateMove(board, nextPlayer, move) {
