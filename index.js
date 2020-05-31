@@ -47,10 +47,6 @@
     }, 1000);
   }
 
-  function availableMoves(board) {
-    return board.map((_, index) => index).filter((index) => board[index] === "");
-  }
-
   function getOtherPlayer(player) {
     return player === "x" ? "o" : "x";
   }
@@ -92,8 +88,19 @@
     board = ["", "", "", "", "", "", "", "", ""];
   }
 
+  function getOptimalRatedMove(board, player) {
+    const ratedMoves = rateMoves(board, player);
+    const bestPossibleRating = Math.max(...ratedMoves.map(([_, rating]) => rating));
+    const optimalRatedMoves = ratedMoves.filter(([_, rating]) => rating === bestPossibleRating);
+    return optimalRatedMoves[Math.floor(Math.random() * optimalRatedMoves.length)];
+  }
+
   function rateMoves(board, nextPlayer) {
     return availableMoves(board).map((move) => [move, rateMove(board, nextPlayer, move)]);
+  }
+
+  function availableMoves(board) {
+    return board.map((_, index) => index).filter((index) => board[index] === "");
   }
 
   function rateMove(board, nextPlayer, move) {
@@ -104,13 +111,6 @@
     if (virtualState === otherPlayer) return -1;
     if (virtualState === "tie") return 0;
     return -getOptimalRatedMove(virtualBoard, otherPlayer)[1];
-  }
-
-  function getOptimalRatedMove(board, player) {
-    const ratedMoves = rateMoves(board, player);
-    const bestPossibleRating = Math.max(...ratedMoves.map(([_, rating]) => rating));
-    const optimalRatedMoves = ratedMoves.filter(([_, rating]) => rating === bestPossibleRating);
-    return optimalRatedMoves[Math.floor(Math.random() * optimalRatedMoves.length)];
   }
 
   function simulateBoard(board, nextPlayer, move) {
