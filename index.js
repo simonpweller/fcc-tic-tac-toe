@@ -41,15 +41,10 @@
   }
 
   function computerPlay() {
-    const ratedMoves = rateMoves(board, cpu);
-    const bestPossibleRating = Math.max(...ratedMoves.map(([_, rating]) => rating));
-    const optimalMoves = ratedMoves
-      .filter(([_, rating]) => rating === bestPossibleRating)
-      .map(([move, _]) => move);
-    const selectedMove = optimalMoves[Math.floor(Math.random() * optimalMoves.length)];
+    const move = getOptimalRatedMove(board, cpu)[0];
 
     setTimeout(function () {
-      board[selectedMove] = cpu;
+      board[move] = cpu;
       nextPlayer = player;
       render(board);
     }, 1000);
@@ -115,19 +110,16 @@
     } else if (virtualState === "tie") {
       return 0;
     } else {
-      /// virtualState === open - recursively evaluate minmax
-      const possibleOutcomes = rateMoves(virtualBoard, otherPlayer);
-      let bestOutcome = -2; // best outcome for the OTHER player;
-      let outcome;
-      for (let index in possibleOutcomes) {
-        // assume OTHER player will play optimally
-        outcome = possibleOutcomes[index][1];
-        if (outcome > bestOutcome) {
-          bestOutcome = outcome;
-        }
-      }
-      return bestOutcome * -1; // flipping to outcome for CURRENT player;
+      let bestPossibleOutcomeForOtherPlayer = getOptimalRatedMove(virtualBoard, otherPlayer)[1];
+      return bestPossibleOutcomeForOtherPlayer * -1;
     }
+  }
+
+  function getOptimalRatedMove(board, player) {
+    const ratedMoves = rateMoves(board, player);
+    const bestPossibleRating = Math.max(...ratedMoves.map(([_, rating]) => rating));
+    const optimalRatedMoves = ratedMoves.filter(([_, rating]) => rating === bestPossibleRating);
+    return optimalRatedMoves[Math.floor(Math.random() * optimalRatedMoves.length)];
   }
 
   function simulateBoard(board, nextPlayer, move) {
